@@ -4,7 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
-import { Aggregate } from "mongoose";
+
 
 const generateAccessAndRefreshTokens= async(userId)=>{
     try {
@@ -363,7 +363,7 @@ const getUserChannelProfile=asyncHandler(async(req,res)=>{
         },
         {
             $lookup:{
-                from:"subscription",
+                from:"subscriptions",
                 localField:"_id",
                 foreignField:"channel",
                 as:"subscribers"
@@ -371,7 +371,7 @@ const getUserChannelProfile=asyncHandler(async(req,res)=>{
         },
         {
             $lookup:{
-                from:"subscription",
+                from:"subscriptions",
                 localField:"_id",
                 foreignField:"subscriber",
                 as:"subscribedTo"
@@ -430,14 +430,14 @@ const getWatchHistory=asyncHandler(async(req,res)=>{
         },
         {
             $lookup:{
-                from:"video",
+                from:"videos",
                 localField:"watchHistory",
                 foreignField:"_id",
                 as:"watchHistory",
                 pipeline:[
                     {
                         $lookup:{
-                            from:"user",
+                            from:"users",
                             localField:"owner",
                             foreignField:"_id",
                             as :"owner",
